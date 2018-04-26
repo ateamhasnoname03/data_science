@@ -39,29 +39,42 @@
 				headers = records[0]
 				records.shift()
 
-				var groupBy = function(xs, key) {
-					return xs.reduce(function(rv, x) {
-						(rv[x[key]] = rv[x[key]] || []).push(x);
-						return rv;
-					}, {});
-				};
-
 				var businesstype_crimenum = records.map((record) => {
 					var obj = {x:record.business_type,z:record.crimes}
 					return obj
 				})
 
-				console.log(groupBy(business_type, 'x'));
+				result = records.reduce((r,a) => {
+					r[a.business_type] = r[a.business_type] || [];
+					r[a.business_type].push(parseInt(a.crimes));
+					return r;
+				}, {})
+				
+
+				function add(a, b) {
+						return a + b;
+				}
+
+				result.a = result.a.reduce(add, 0);
+				result.b = result.b.reduce(add, 0);
+				result.c = result.c.reduce(add, 0);
+
+				var data = [result.a, result.b, result.c]
+
+				console.log(data)
 
 				var scatterChart = new Chart(btvcrime, {
 					type: 'bar',
-					data: {
-						datasets: [{
-							label: '#crimes committed around buisness type',
-							data: businesstype_crimenum,
-							backgroundColor: 'Red'
-						}]
-					}
+					data: data,
+					options: {
+    scales: {
+        xAxes: [{
+            gridLines: {
+                offsetGridLines: true
+            }
+        }]
+    }
+}
 				});
 			}
 		})
