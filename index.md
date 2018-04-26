@@ -13,12 +13,10 @@
 </head>
 <body>
 	<div class="container">
-		<canvas id="AverageViability"></canvas>
-		<canvas id="conditionalInspectionChart"></canvas>
-		<canvas id="failedInspectionChart"></canvas>
+		<canvas id="BtypevsCrimes"></canvas>
 	</div>
 		<script>
-		var averageViability = document.getElementById('AverageViability').getContext('2d');
+		var averageViability = document.getElementById('BtypevsCrimes').getContext('2d');
 		$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/Task_1_result.csv',
 			async: false,
 
@@ -61,13 +59,10 @@
 						}
 					}
 				});
-	
 			}
 		})
 	</script>
 </body>
-
-
 
 
 #### TASK 4
@@ -204,6 +199,7 @@
 
 </body>
 </html>
+
 
 ### TEAM MEMBERS
 - **Meghana Sanjay**
