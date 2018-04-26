@@ -13,13 +13,16 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
 </head>
+
+
 <body>
 
 	<div class="container">
 		<canvas id="BtypevsCrimes"></canvas>
 	</div>
+
 	<script>
-		var averageViability = document.getElementById('BtypevsCrimes').getContext('2d');
+		var btvcrime = document.getElementById('BtypevsCrimes').getContext('2d');
 		$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/Task_1_result.csv',
 			async: false,
 
@@ -33,7 +36,6 @@
 					return {year:details[0],business_type:details[1],business_name:details[2],address:details[3],has_T:details[4],has_L:details[5],crime_type:details[6],crimes:details[7],arrests:details[8],OnPremises:details[9]}
 				})
 
-				// Get and delete headers from the records array
 				headers = records[0]
 				records.shift()
 
@@ -42,8 +44,7 @@
 					return obj
 				})
 
-				// scatter plot for plotting average ratings vs number of passed inspections
-				var scatterChart = new Chart(average, {
+				var scatterChart = new Chart(btvcrime, {
 					type: 'scatter',
 					data: {
 						datasets: [{
@@ -64,7 +65,7 @@
 				});
 			}
 		})
-		
+
 	</script>
 
 </body>
