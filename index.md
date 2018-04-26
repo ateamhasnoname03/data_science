@@ -53,14 +53,6 @@
 							backgroundColor: 'Red'
 
 						}]
-					},
-					options: {
-						scales: {
-							xAxes: [{
-								type: 'linear',
-								position: 'bottom'
-							}]
-						}
 					}
 				});
 			}
