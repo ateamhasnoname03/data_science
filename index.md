@@ -4,6 +4,71 @@
 
 ### DATA VISUALIZATION CHARTS
 
+#### Task 1
+<html>
+<head>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+	<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+</head>
+<body>
+
+	<div class="container">
+		<canvas id="BtypevsCrimes"></canvas>
+	</div>
+	<script>
+		var averageViability = document.getElementById('BtypevsCrimes').getContext('2d');
+		$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/Task_1_result.csv',
+			async: false,
+
+			success: function(result){
+				lines = result.split("\n") // split the values by the lines
+
+				// convert the records to json values
+				var records = lines.filter((s)=> s.length > 0).map((record) =>{
+					details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+					details = details || []
+					return {year:details[0],business_type:details[1],business_name:details[2],address:details[3],has_T:details[4],has_L:details[5],crime_type:details[6],crimes:details[7],arrests:details[8],OnPremises:details[9]}
+				})
+
+				// Get and delete headers from the records array
+				headers = records[0]
+				records.shift()
+
+				var businesstype_crimenum = records.map((record) => {
+					var obj = {x:businesstype,z:record.crimes}
+					return obj
+				})
+
+				// scatter plot for plotting average ratings vs number of passed inspections
+				var scatterChart = new Chart(average, {
+					type: 'scatter',
+					data: {
+						datasets: [{
+							label: 'Business Types and #crimes committed around them',
+							data: businesstype_crimenum,
+							backgroundColor: 'Red'
+
+						}]
+					},
+					options: {
+						scales: {
+							xAxes: [{
+								type: 'linear',
+								position: 'bottom'
+							}]
+						}
+					}
+				});
+			}
+		})
+		
+	</script>
+
+</body>
+
 #### TASK 4
 <html>
 <head>
