@@ -38,11 +38,14 @@
 
 				headers = records[0]
 				records.shift()
+				console.log(records)
 
 				var businesstype_crimenum = records.map((record) => {
 					var obj = {x:records.business_type,z:record.crimes}
 					return obj
 				})
+
+				console.log(businesstype_crimenum)
 
 				var scatterChart = new Chart(btvcrime, {
 					type: 'bar',
