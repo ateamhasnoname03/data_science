@@ -38,12 +38,27 @@
 
 				headers = records[0]
 				records.shift()
-				console.log(records)
+
+				var groupBy = function(xs, key) {
+					return xs.reduce(function(rv, x) {
+						(rv[x[key]] = rv[x[key]] || []).push(x);
+						return rv;
+					}, {});
+				};
 
 				var businesstype_crimenum = records.map((record) => {
 					var obj = {x:record.business_type,z:record.crimes}
 					return obj
 				})
+
+				console.log(groupBy(business_type, 'x'));
+
+
+				var b_c businesstype_crimenum.group
+
+				var sum = rockets.reduce(function(prevVal, elem) {
+    return prevVal + elem.launches;
+}, 0);
 
 				console.log(businesstype_crimenum)
 
@@ -54,7 +69,6 @@
 							label: '#crimes committed around buisness type',
 							data: businesstype_crimenum,
 							backgroundColor: 'Red'
-
 						}]
 					}
 				});
