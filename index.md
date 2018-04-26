@@ -40,15 +40,15 @@
 				records.shift()
 
 				var businesstype_crimenum = records.map((record) => {
-					var obj = {x:businesstype,z:record.crimes}
+					var obj = {x:business_type,z:record.crimes}
 					return obj
 				})
 
 				var scatterChart = new Chart(btvcrime, {
-					type: 'scatter',
+					type: 'bar',
 					data: {
 						datasets: [{
-							label: 'Business Types and #crimes committed around them',
+							label: '#crimes committed around buisness type',
 							data: businesstype_crimenum,
 							backgroundColor: 'Red'
 
