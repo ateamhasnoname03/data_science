@@ -40,7 +40,7 @@
 				records.shift()
 
 				var businesstype_crimenum = records.map((record) => {
-					var obj = {x:business_type,z:record.crimes}
+					var obj = {x:records.business_type,z:record.crimes}
 					return obj
 				})
 
