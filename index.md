@@ -41,7 +41,7 @@
 				console.log(records)
 
 				var businesstype_crimenum = records.map((record) => {
-					var obj = {x:records.business_type,z:record.crimes}
+					var obj = {x:record.business_type,z:record.crimes}
 					return obj
 				})
 
