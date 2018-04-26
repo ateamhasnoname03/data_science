@@ -20,7 +20,7 @@ conn.commit()
 conn.row_factory = sqlite3.Row
 inspects = conn.cursor()
 
-inspects.execute("select *, substr(inspection_date,7,4)||substr(inspection_date,4,2)||substr(inspection_date,1,2) as date, CAST(substr(inspection_date,7,4) as integer) as year from inspect WHERE results = 'Out of Business' or results = 'Fail' ORDER BY address, date DESC")
+inspects.execute("select *, substr(inspection_date,7,4)||substr(inspection_date,4,2)||substr(inspection_date,1,2) as date, CAST(substr(inspection_date,7,4) as integer) as year from inspect WHERE (results = 'Out of Business' or results = 'Fail') and (zip_code >= 60601 and zip_code <= 60607) ORDER BY address, date DESC")
 results = inspects.fetchall()
 numfailures = 0
 pd = pandas.DataFrame(columns = ['business_name','address','inspection_date','years_alive'])

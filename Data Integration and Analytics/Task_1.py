@@ -25,7 +25,7 @@ conn.commit()
 
 conn.row_factory = sqlite3.Row
 b = conn.cursor()
-b.execute('SELECT DISTINCT legal_name,address,license_code,latitude,longitude,license_term_expiration_date,substr(license_term_expiration_date,7,4) as year from licenses WHERE license_code == 1781 or license_code == 1690 or license_code == 1023 or license_code == 1584 or license_code == 1586 or license_code == 1585 or license_code == 1470 or license_code == 1474 ORDER BY address,legal_name LIMIT 500')
+b.execute('SELECT DISTINCT legal_name,address,license_code,latitude,longitude,license_term_expiration_date,substr(license_term_expiration_date,7,4) as year from licenses WHERE (license_code == 1781 or license_code == 1690 or license_code == 1023 or license_code == 1584 or license_code == 1586 or license_code == 1585 or license_code == 1470 or license_code == 1474) and (zip_code >= 60601 and zip_code <= 60607)  ORDER BY address,legal_name LIMIT 500')
 licenses = b.fetchall()
 
 output = pandas.DataFrame(columns=['year','business_type','business_name','address','has_tobacco_license','has_liquor_license','crime_type','#crimes','#arrests','#OnPremises'])

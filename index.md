@@ -132,13 +132,82 @@
 				});
 
 			 }})
-		
 
+		
 	</script>
 
 </body>
 </html>
 
+#### Task 8
+<html>
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+	<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<canvas id="AverageViability"></canvas>
+		<canvas id="conditionalInspectionChart"></canvas>
+		<canvas id="failedInspectionChart"></canvas>
+	</div>
+		<script>
+		var averageViability = document.getElementById('AverageViability').getContext('2d');
+		$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/task8_result.csv',
+			async: false,
+
+			success: function(result){
+				lines = result.split("\n") // split the values by the lines
+
+				// convert the records to json values
+				var records = lines.filter((s)=> s.length > 0).map((record) =>{
+					details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+					details = details || []
+					return {name:details[0],address:details[1],failed_date:details[2],years_alive:details[3]}
+				})
+
+				// Get and delete headers from the records array
+				headers = records[0]
+				records.shift()
+
+				<!-- var avgRatingValues = records.map((record) => record.avgRating)
+				var passCounts = records.map((record) => record.numPass)
+				var condCounts = records.map((record) => record.numCond)
+				var failCounts = records.map((record) => record.numFail) -->
+
+				var ratingToPass = records.map((record) => {
+					var obj = {x:record.avgRating,y:record.numPass}
+					return obj
+				})
+
+				// scatter plot for plotting average ratings vs number of passed inspections
+				var scatterChart = new Chart(average, {
+					type: 'scatter',
+					data: {
+						datasets: [{
+							label: 'Average Review Rating vs #Pass',
+							data: ratingToPass,
+							backgroundColor: 'Green'
+
+						}]
+					},
+					options: {
+						scales: {
+							xAxes: [{
+								type: 'linear',
+								position: 'bottom'
+							}]
+						}
+					}
+				});
+	
+			}
+		})
+	</script>
+</body>
+
+</html>
 
 ### TEAM MEMBERS
 - **Meghana Sanjay**
