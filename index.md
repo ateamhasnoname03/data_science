@@ -223,103 +223,87 @@
 <html>
   <head>
 
-    <title>Marker Clustering</title>
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-  
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
+	<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC94Y9rHyYQQ9CCf4DbV8f9J0ER9nKIdUg&callback=getcsv"></script>
+ 
   </head>
   <body>
 
-		<div id="map"></div>
-		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-		<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
-
+	<div id="map" style:"height: 100%"></div>
+		
     <script>
-			function getcsv(){
-				$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/Task_8_result.csv',
-					async: false,
+		function getcsv(){
+			$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/Task_8_result.csv',
+				async: false,
 
-					success: function(result){
-						lines = result.split("\n") // split the values by the lines
+				success: function(result){
+					lines = result.split("\n") // split the values by the lines
 
-						// convert the records to json values
-						var records = lines.filter((s)=> s.length > 0).map((record) =>{
-							details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
-							details = details || []
+					// convert the records to json values
+					var records = lines.filter((s)=> s.length > 0).map((record) =>{
+						details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+						details = details || []
 
-							//business_name,address,inspection_date,years_alive,latitude,longitude
+						//business_name,address,inspection_date,years_alive,latitude,longitude
 
-							return {business_name:details[0],address:details[1],inspection_date:details[2],years_alive:details[3],latitude:details[4],longitude:details[5]}
-						})
+						return {business_name:details[0],address:details[1],inspection_date:details[2],years_alive:details[3],latitude:details[4],longitude:details[5]}
+					})
 
-						headers = records[0]
-						records.shift()
+					headers = records[0]
+					records.shift()
 
-						initMap(records)
-					}
-				})
-			}
+					initMap(records)
+				}
+			})
+		}
 
-      function initMap(records) {
+		function initMap(records) {
 
-        var Gmap = new google.maps.Map(document.getElementById('map'), {
-          zoom: 14,
-          center: {lat: 41.8781, lng: -87.6298}
-        });
+			var Gmap = new google.maps.Map(document.getElementById('map'), {
+			zoom: 14,
+			center: {lat: 41.8781, lng: -87.6298}
+			});
 
-        // Add some markers to the map.
-        // Note: The code uses the JavaScript Array.prototype.map() method to
-        // create an array of markers based on a given "locations" array.
-        // The map() method here has nothing to do with the Google Maps API.
-				let markers = [];
-				$.each(records, function(i, d){
-					var marker = new google.maps.Marker({
-						position: {lat: parseFloat(d.latitude), lng: parseFloat(d.longitude)},
-						map: Gmap,
-						title: d.business_name
-					});
-
-					let address = d.address;
-					var infowindow = new google.maps.InfoWindow({
-						content:  `<div class="container">
-												<h3>${d.business_name}</h3>
-												<p><b>Address:</b>${d.address}</p>
-												<p><b>Failed Inspection on:</b>${d.inspection_date}</p>
-												<p><b>Stayed in Business for:</b>${d.years_alive} years</p>
-												</div>
-												`
-					});
-
-					marker.addListener('click', function() {
-      		infowindow.open(Gmap, marker);
-					});
-
-					markers.push(marker);
+			// Add some markers to the map.
+			// Note: The code uses the JavaScript Array.prototype.map() method to
+			// create an array of markers based on a given "locations" array.
+			// The map() method here has nothing to do with the Google Maps API.
+			let markers = [];
+			$.each(records, function(i, d){
+				var marker = new google.maps.Marker({
+					position: {lat: parseFloat(d.latitude), lng: parseFloat(d.longitude)},
+					map: Gmap,
+					title: d.business_name
 				});
-        
-        // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(Gmap, markers,
-					{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-					maxZoom: 20
+
+				let address = d.address;
+				var infowindow = new google.maps.InfoWindow({
+					content:  `<div class="container">
+											<h3>${d.business_name}</h3>
+											<p><b>Address:</b>${d.address}</p>
+											<p><b>Failed Inspection on:</b>${d.inspection_date}</p>
+											<p><b>Stayed in Business for:</b>${d.years_alive} years</p>
+											</div>
+											`
 				});
-			}
-    </script>
-    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC94Y9rHyYQQ9CCf4DbV8f9J0ER9nKIdUg&callback=getcsv">
-    </script>
+
+				marker.addListener('click', function() {
+					infowindow.open(Gmap, marker);
+				});
+
+				markers.push(marker);
+				console.log("pushed a marker");
+			});
+			
+			// Add a marker clusterer to manage the markers.
+			var markerCluster = new MarkerClusterer(Gmap, markers,
+				{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+				maxZoom: 20
+			});
+		}
+	</script>
 
   </body>
 </html>
