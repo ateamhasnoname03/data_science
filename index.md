@@ -5,95 +5,87 @@
 ### DATA VISUALIZATION CHARTS
 
 #### Task 1
-<html>
-<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-	<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-
-</head>
-
-
-<body>
-	<div class="container">
-		<canvas id="BtypevsCrimes"></canvas>
-	</div>
-	<script>
-		var btvcrime = document.getElementById('BtypevsCrimes').getContext('2d');
-		$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/Task_1_result.csv',
-			async: false,
-			success: function(result){
-				lines = result.split("\n") // split the values by the lines
-				// convert the records to json values
-				var records = lines.filter((s)=> s.length > 0).map((record) =>{
-					details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
-					details = details || []
-					return {year:details[0],business_type:details[1],business_name:details[2],address:details[3],has_T:details[4],has_L:details[5],crime_type:details[6],crimes:details[7],arrests:details[8],OnPremises:details[9]}
-				})
-				// remove header files
-				headers = records[0]
-				records.shift()
-				// reduce functions for visualizing totals
-				result = records.reduce((r,a) => {
-					r[a.business_type] = r[a.business_type] || [];
-					r[a.business_type].push(parseInt(a.crimes));
-					return r;
-				}, {})
-				arrest_result = records.reduce((r,a) => {
-					r[a.business_type] = r[a.business_type] || [];
-					r[a.business_type].push(parseInt(a.arrests));
-					return r;
-				}, {})
-				// redduction accumulation function
-				function add(a, b) {
-						return a + b;
-				}
-				//reduction
-				result.a = result.a.reduce(add, 0);
-				result.b = result.b.reduce(add, 0);
-				result.c = result.c.reduce(add, 0);
-				arrest_result.a = arrest_result.a.reduce(add, 0);
-				arrest_result.b = arrest_result.b.reduce(add, 0);
-				arrest_result.c = arrest_result.c.reduce(add, 0);
-				//Cleaning variables and setting up chart.
-				var crime_data = [result.a, result.b, result.c]
-				var arrest_data = [arrest_result.a, arrest_result.b, arrest_result.c]
-				var barChartData = {
-					labels: ['Grocery Stores', 'Schools', 'Restaurants'],
-					datasets: [{
-						label: '#Crimes',
-						backgroundColor: '#ff6384',
-						borderColor: '#ff6384',
-						borderWidth: 1,
-						data: crime_data
-					}, {
-						label: '#Arrests',
-						backgroundColor: '#36a2eb',
-						borderColor: '#36a2eb',
-						borderWidth: 1,
-						data: arrest_data
-					}]
-				};
-				var scatterChart = new Chart(btvcrime, {
-				type: 'bar',
-				data: barChartData,
-				options: {
-					responsive: true,
-					legend: {
-						position: 'top',
-					},
-					title: {
-						display: true,
-						text: 'Task 1'
-					}
-				}
-			});
+<div class="container">
+	<canvas id="BtypevsCrimes"></canvas>
+</div>
+<script>
+	var btvcrime = document.getElementById('BtypevsCrimes').getContext('2d');
+	$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/Task_1_result.csv',
+		async: false,
+		success: function(result){
+			lines = result.split("\n") // split the values by the lines
+			// convert the records to json values
+			var records = lines.filter((s)=> s.length > 0).map((record) =>{
+				details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+				details = details || []
+				return {year:details[0],business_type:details[1],business_name:details[2],address:details[3],has_T:details[4],has_L:details[5],crime_type:details[6],crimes:details[7],arrests:details[8],OnPremises:details[9]}
+			})
+			// remove header files
+			headers = records[0]
+			records.shift()
+			// reduce functions for visualizing totals
+			result = records.reduce((r,a) => {
+				r[a.business_type] = r[a.business_type] || [];
+				r[a.business_type].push(parseInt(a.crimes));
+				return r;
+			}, {})
+			arrest_result = records.reduce((r,a) => {
+				r[a.business_type] = r[a.business_type] || [];
+				r[a.business_type].push(parseInt(a.arrests));
+				return r;
+			}, {})
+			// redduction accumulation function
+			function add(a, b) {
+					return a + b;
 			}
-		})
-	</script>
-</body>
-</html>
+			//reduction
+			result.a = result.a.reduce(add, 0);
+			result.b = result.b.reduce(add, 0);
+			result.c = result.c.reduce(add, 0);
+			arrest_result.a = arrest_result.a.reduce(add, 0);
+			arrest_result.b = arrest_result.b.reduce(add, 0);
+			arrest_result.c = arrest_result.c.reduce(add, 0);
+			//Cleaning variables and setting up chart.
+			var crime_data = [result.a, result.b, result.c]
+			var arrest_data = [arrest_result.a, arrest_result.b, arrest_result.c]
+			var barChartData = {
+				labels: ['Grocery Stores', 'Schools', 'Restaurants'],
+				datasets: [{
+					label: '#Crimes',
+					backgroundColor: '#ff6384',
+					borderColor: '#ff6384',
+					borderWidth: 1,
+					data: crime_data
+				}, {
+					label: '#Arrests',
+					backgroundColor: '#36a2eb',
+					borderColor: '#36a2eb',
+					borderWidth: 1,
+					data: arrest_data
+				}]
+			};
+			var scatterChart = new Chart(btvcrime, {
+			type: 'bar',
+			data: barChartData,
+			options: {
+				responsive: true,
+				legend: {
+					position: 'top',
+				},
+				title: {
+					display: true,
+					text: 'Task 1'
+				}
+			}
+		});
+		}
+	})
+</script>
+
 
 
 
@@ -163,8 +155,6 @@
                 
                 }
                 });
-                
-
 </script>
 
 ### Task 3
