@@ -265,6 +265,17 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 	<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script>
+	$('document').ready(function(){
+		document.getElementById('chartType').addEventListener('change', function(e) {
+		
+			populate_graph()
+
+		//console.log(document.getElementById('chartType').val)
+		});
+
+	});
+	</script>
 
 </head>
 
@@ -272,15 +283,22 @@
 <body>
 
 	<div class="container">
-		<canvas id="passedInspectionChart"></canvas>
-		<canvas id="conditionalInspectionChart"></canvas>
-		<canvas id="failedInspectionChart"></canvas>
+		<canvas id="InspectionChart"></canvas>
+		
+		
+		<select id="chartType">
+		    <option value="pass">Passed Inspections</option>
+		    <option value="conditional">Conditional Inspections</option>
+		    <option value="fail">Fail Inspections</option>
+	    
+		</select>
 	</div>
 
 	<script>
-		var passedInspectionChart = document.getElementById('passedInspectionChart').getContext('2d');
-		var conditionalInspectionChart = document.getElementById('conditionalInspectionChart').getContext('2d');
-		var failedInspectionChart = document.getElementById('failedInspectionChart').getContext('2d');
+		var InspectionChart = document.getElementById('InspectionChart').getContext('2d');
+		
+		populate_graph()
+		function populate_graph(){
 		$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/task4_result.csv',
 			async: false,
 
@@ -322,56 +340,33 @@
 					return ob
 				})
 
+				var elem = document.getElementById("chartType");
+			    var value = elem.options[elem.selectedIndex].value;
+			    var text = elem.options[elem.selectedIndex].text;
+			    var graph_data = ''
+			    if (value == 'pass'){
+			    	graph_data = ratingToPass
+			    	graph_label = '#Pass'
+			    	graph_color = 'Green'
+			    } else if (value == 'conditional'){
+			    	graph_data = ratingToConditional
+			    	graph_label = '#Conditional'
+			    	graph_color = 'Orange'
+			    } else if (value == 'fail'){
+			    	graph_data = ratingToFail
+			    	graph_label = '#Fail'
+			    	graph_color = 'Red'
+			    }
+				console.log(graph_data)
+
 				// scatter plot for plotting average ratings vs number of passed inspections
-				var scatterChart = new Chart(passedInspectionChart, {
+				var scatterChart = new Chart(InspectionChart, {
 			    type: 'scatter',
 			    data: {
 			        datasets: [{
-			            label: 'Average Review Rating vs #Pass',
-			            data: ratingToPass,
-			            backgroundColor: 'Green'
-
-			        }]
-			    },
-			    options: {
-			        scales: {
-			            xAxes: [{
-			                type: 'linear',
-			                position: 'bottom'
-			            }]
-			        }
-			    }
-				});
-
-				// scatter plot for plotting average ratings vs number of conditional inspections
-				var scatterChart = new Chart(conditionalInspectionChart, {
-			    type: 'scatter',
-			    data: {
-			        datasets: [{
-			            label: 'Average Review Rating vs #Conditional',
-			            data: ratingToConditional,
-			            backgroundColor: 'Orange'
-			            
-			        }]
-			    },
-			    options: {
-			        scales: {
-			            xAxes: [{
-			                type: 'linear',
-			                position: 'bottom'
-			            }]
-			        }
-			    }
-				});	
-
-				// scatter plot for average ratings vs number of failed inspections
-				var scatterChart = new Chart(failedInspectionChart, {
-			    type: 'scatter',
-			    data: {
-			        datasets: [{
-			            label: 'Average Review Rating vs #Fail',
-			            data: ratingToFail,
-			            backgroundColor: 'Red'
+			            label: 'Average Review Rating vs '+graph_label,
+			            data: graph_data,
+			            backgroundColor: graph_color
 
 			        }]
 			    },
@@ -386,6 +381,9 @@
 				});
 
 			 }})
+
+	}
+
 
 		
 	</script>
