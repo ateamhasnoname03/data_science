@@ -77,7 +77,7 @@
 				},
 				title: {
 					display: true,
-					text: 'Task 1'
+					text: '#Crime and #Arrest Near Business Type'
 				}
 			}
 		});
@@ -139,7 +139,7 @@
 					},
 					title: {
 							display: true,
-							text: 'Task 2'
+							text: 'Crime Data by Neighbourhood'
 					}
 				}
 			});            
@@ -202,7 +202,7 @@
 					},
 					title: {
 						display: true,
-						text: 'Task 3'
+						text: 'Crime Data by Age Demographic'
 					}
 				}
 			});
@@ -318,7 +318,7 @@
 	}	
 </script>
 
-### Task 5 6
+### Sentiment Analysis
 <div class="container">
 	<canvas id="pos_neg_rating"></canvas>
 </div>
