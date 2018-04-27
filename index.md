@@ -219,11 +219,10 @@
 </body>
 </html>
 
-#### Task 8 - Temporary
+#### Task 8
 <html>
   <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
+
     <title>Marker Clustering</title>
     <style>
       /* Always set the map height explicitly to define the size of the div
@@ -238,8 +237,10 @@
         padding: 0;
       }
     </style>
+  
   </head>
   <body>
+
 		<div id="map"></div>
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 		<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
@@ -321,6 +322,7 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC94Y9rHyYQQ9CCf4DbV8f9J0ER9nKIdUg&callback=getcsv">
     </script>
+	
   </body>
 </html>
 
