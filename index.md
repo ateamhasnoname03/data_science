@@ -219,6 +219,71 @@
 </body>
 </html>
 
+#### Task 7
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<div class="container">
+	<canvas id="reviewRatingChart"width="50" height="25""></canvas>
+</div>
+<script>
+	var reviewRatingChart = document.getElementById('reviewRatingChart').getContext('2d');
+	$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/task7_output.csv',
+		async: false,
+		 success: function(result){
+		 	//console.log(data.responseText
+			lines = result.split("\n") // split the values by the lines
+			// convert the records to json values
+			var records = lines.filter((s)=> s.length > 0).map((record) =>{
+			details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+			details = details || []
+			return {review:details[0],reviewRating:details[1]}
+			})
+
+			headers = records[0] // get the headers
+
+			records.shift() // remove the first (headers) row
+			
+			var reviewRatingValues = records.map((record) => record.reviewRating)
+			count_1=count_2=count_3=count_4=count_5 = 0 
+			reviewRatingValues.forEach(function(item) {
+				//console.log(item)
+				if(item == "1") count_1++;
+				else if(item == "2") count_2++;
+				else if(item == "3") count_3++;
+				else if(item == "4") count_4++;
+				else if(item == "5") count_5++;
+			})
+			// pieChart for plotting review ratings
+			var pieChart = new Chart(reviewRatingChart,{
+		    type: 'pie',
+		    data: {
+			labels: ["Review Rating 1", "Review Rating 2", "Review Rating 3", "Review Rating 4", "Review Rating 5"],
+			 datasets: [
+			 {
+				data: [count_1,count_2,count_3,count_4,count_5],
+				//data: [1000,2000,3000,4000,5000],
+		        backgroundColor: [
+					"red", 
+					"orange", 
+					"yellow", 
+					"blue",
+					"green"
+				]
+		    }]
+		    }
+			}
+			);	
+
+		 }}
+		 )
+</script>
+</html>
+
+
+
 #### Task 8
 {% include google-map.html latitude=41.8781 longitude=-87.6298 zoom=15 %}
 
