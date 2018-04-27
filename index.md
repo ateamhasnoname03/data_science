@@ -116,6 +116,78 @@
 </body>
 </html>
 
+
+
+### Task 2
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<div class="container">
+	<canvas id="NeighbourhoodvsCrimesProb"></canvas>
+</div>
+
+<script>
+	var nvcrimep = document.getElementById('NeighbourhoodvsCrimesProb').getContext('2d');
+	$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/output_task_2_trial1.csv',
+		async: false,
+
+		success: function(result){
+			lines = result.split("\n") // split the values by the lines
+
+			// convert the records to json values
+			var records = lines.filter((s)=> s.length > 0).map((record) =>{
+				details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+				details = details || []
+				return {Address:details[0],Classifier:details[1],Prediction:details[2],Probability:details[3]}
+            });headers = records[0]
+			records.shift()
+
+			var barChartData = {
+                labels: ["001XX N MICHIGAN AVE","001XX N STATE ST","001XX W JACKSON BLVD","001XX W Jackson Blvd","001XX W MADISON ST","001XX W VAN BUREN ST","002XX N CLARK ST","002XX N LOWER MICHIGAN AVE","002XX N MICHIGAN AVE","003XX N LA SALLE ST"],
+                datasets: [{
+                    label: 'DecisionTree',
+                    backgroundColor: 'Blue',
+                    borderColor: 'Blue',
+                    borderWidth: 1,
+                    data: [1,1,1,1,1,1,1,0.654676259,1,1]
+                }, {
+                    label: 'LogisticRegression',
+                    backgroundColor: 'Yellow',
+                    borderColor: 'Yellow',
+                    borderWidth: 1,
+                    data: [0.552730493,0.553021972,0.552264041,0.520338855,0.548039461,0.549336873,0.55290906,0.544891359,0.552422311,0.527977161]
+                }, {
+                    label: 'RandomForest',
+                    backgroundColor: 'Red',
+                    borderColor: 'Red',
+                    borderWidth: 1,
+                    data: [0.807631225,0.87074327,0.850573228,0.38595796,0.813417079,0.747034012,0.757487719,0.813385861,0.811604345,0.757636322]
+                }]
+
+                };
+
+                var scatterChart = new Chart(nvcrimep, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: {
+                        responsive: true,
+                        legend: {
+                        position: 'top',
+                    },
+                        title: {
+                            display: true,
+                            text: 'Task 2'
+                        }
+                    }
+                });
+
+                scatterChart.datasets[0].bars[0].fillColor = 'Orange';
+                }
+                });
+                
+
+</script>
+
 ### Task 3
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 <script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
