@@ -266,8 +266,6 @@
 						headers = records[0]
 						records.shift()
 
-						console.log(records)
-
 						initMap(records)
 					}
 				})
@@ -322,7 +320,7 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC94Y9rHyYQQ9CCf4DbV8f9J0ER9nKIdUg&callback=getcsv">
     </script>
-	
+
   </body>
 </html>
 
