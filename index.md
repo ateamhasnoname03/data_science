@@ -3,12 +3,11 @@
 ## A TEAM HAS NO NAME
 
 ### DATA VISUALIZATION CHARTS
-
-### Task 1
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 <script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
+### Task 1
 <div class="container">
 	<canvas id="BtypevsCrimes"></canvas>
 </div>
@@ -149,9 +148,6 @@
 </script>
 
 ### Task 3
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <div class="container">
 	<canvas id="NeighbourhoodvsCrimes"></canvas>
 </div>
@@ -173,48 +169,46 @@
 			headers = records[0]
 			records.shift()
 
-
 			var barChartData = {
-                labels: ["Loop","Near West Side","Near South Side"],
-                datasets: [{
-                    label: 'Above 18',
-                    backgroundColor: 'Blue',
-                    borderColor: 'Blue',
-                    borderWidth: 1,
-                    data: [1669,1048,5872]
-                }, {
-                    label: 'Below 18 and over 64',
-                    backgroundColor: 'Yellow',
-                    borderColor: 'Yellow',
-                    borderWidth: 1,
-                    data: [3953,4663,12183]
-                }, {
-                    label: 'Population',
-                    backgroundColor: 'Red',
-                    borderColor: 'Red',
-                    borderWidth: 1,
-                    data: [29283,21390,54881]
-                }]
+				labels: ["Loop","Near West Side","Near South Side"],
+				datasets: [{
+						label: 'Above 18',
+						backgroundColor: 'Blue',
+						borderColor: 'Blue',
+						borderWidth: 1,
+						data: [1669,1048,5872]
+				}, {
+						label: 'Below 18 and over 64',
+						backgroundColor: 'Yellow',
+						borderColor: 'Yellow',
+						borderWidth: 1,
+						data: [3953,4663,12183]
+				}, {
+						label: 'Population',
+						backgroundColor: 'Red',
+						borderColor: 'Red',
+						borderWidth: 1,
+						data: [29283,21390,54881]
+				}]
+			};
 
-                };
-
-                var scatterChart = new Chart(nvcrime, {
-                type: 'bar',
-                data: barChartData,
-                options: {
-                responsive: true,
-                legend: {
-                position: 'top',
-                },
-                title: {
-                display: true,
-                text: 'Task 3'
-                }
-                }
-                });
-                }
-                });
-
+			var scatterChart = new Chart(nvcrime, {
+				type: 'bar',
+				data: barChartData,
+				options: {
+					responsive: true,
+					legend: {
+						position: 'top',
+					},
+					title: {
+						display: true,
+						text: 'Task 3'
+					}
+				}
+			});
+		}
+	});
+	
 </script>
 #### TASK 4
 <html>
