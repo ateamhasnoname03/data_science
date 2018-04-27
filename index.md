@@ -7,7 +7,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
-### Task 1
+### Crime/Business_Type Report:
 <div class="container">
 	<canvas id="BtypevsCrimes"></canvas>
 </div>
@@ -85,7 +85,7 @@
 	})
 </script>
 
-### Task 2
+### Neighbourhood and Crime Data
 <div class="container">
 	<canvas id="NeighbourhoodvsCrimesProb"></canvas>
 </div>
@@ -147,13 +147,13 @@
 	});
 </script>
 
-### Task 3
+### Age and Crime Data
 <div class="container">
-	<canvas id="NeighbourhoodvsCrimes"></canvas>
+	<canvas id="agevsCrimes"></canvas>
 </div>
 
 <script>
-	var nvcrime = document.getElementById('NeighbourhoodvsCrimes').getContext('2d');
+	var nvcrime = document.getElementById('agevsCrimes').getContext('2d');
 	$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/Output_task_3.csv',
 		async: false,
 
@@ -210,7 +210,7 @@
 	});
 </script>
 
-### TASK 4
+### Review Ratings Vs. Food Inspection Results
 <script>
 	$('document').ready(function(){
 		document.getElementById('chartType').addEventListener('change', function(e) {
@@ -318,7 +318,7 @@
 	}	
 </script>
 
-### Task 6
+### Task 5 6
 <div class="container">
 	<canvas id="pos_neg_rating"></canvas>
 </div>
@@ -419,20 +419,19 @@
 	var reviewRatingChart = document.getElementById('reviewRatingChart').getContext('2d');
 	$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/task7_output.csv',
 		async: false,
-		 success: function(result){
+		success: function(result){
 		 	//console.log(data.responseText
 			lines = result.split("\n") // split the values by the lines
 			// convert the records to json values
 			var records = lines.filter((s)=> s.length > 0).map((record) =>{
-			details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
-			details = details || []
-			return {review:details[0],reviewRating:details[1]}
+				details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+				details = details || []
+				return {review:details[0],reviewRating:details[1]}
 			})
-
-			headers = records[0] // get the headers
-
-			records.shift() // remove the first (headers) row
-			
+			//get and remove headers
+			headers = records[0]
+			records.shift()
+			//map data
 			var reviewRatingValues = records.map((record) => record.reviewRating)
 			count_1=count_2=count_3=count_4=count_5 = 0 
 			reviewRatingValues.forEach(function(item) {
@@ -447,29 +446,23 @@
 			var pieChart = new Chart(reviewRatingChart,{
 		    type: 'pie',
 		    data: {
-			labels: ["Review Rating 1", "Review Rating 2", "Review Rating 3", "Review Rating 4", "Review Rating 5"],
-			 datasets: [
-			 {
-				data: [count_1,count_2,count_3,count_4,count_5],
-				//data: [1000,2000,3000,4000,5000],
-		        backgroundColor: [
-					"red", 
-					"orange", 
-					"yellow", 
-					"blue",
-					"green"
-				]
-		    }]
+					labels: ["Review Rating 1", "Review Rating 2", "Review Rating 3", "Review Rating 4", "Review Rating 5"],
+					datasets: [{
+						data: [count_1,count_2,count_3,count_4,count_5],
+						//data: [1000,2000,3000,4000,5000],
+						backgroundColor: [
+							"red", 
+							"orange", 
+							"yellow", 
+							"blue",
+							"green"
+						]
+					}]
 		    }
-			}
-			);	
-
-		 }}
-		 )
+			});	
+		}
+	})
 </script>
-
-
-
 
 ### Task 8
 #### Food inspection viability and interactive map.
