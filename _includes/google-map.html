@@ -1,4 +1,4 @@
-<div id="map" style="width:300px;height:300px;"></div>
+<div id="map" style="width:600px;height:600px;"></div>
 
 <script>
   window.mapData = {"latitude": {{ include.latitude }},"longitude": {{ include.longitude }}, "zoom": {{ include.zoom}}};
@@ -39,11 +39,16 @@
     };
 
     var map = new google.maps.Map(document.getElementById('map'), myOptions);
-
-    var marker = new google.maps.Marker({
-      map: map,
-      position: new google.maps.LatLng(window.mapData.latitude, window.mapData.longitude)
-    });
+		var markers = [];
+		records.forEach(function(item){
+			var marker = new google.maps.Marker({
+				map: map,
+				position: new google.maps.LatLng(parseFloat(item.latitude), parseFloat(Item.longitude)),
+				title: item.business_name
+			});
+		
+		});
+    
 
     google.maps.event.addDomListener(window, 'resize', function() {
       map.setCenter(myOptions.center);
