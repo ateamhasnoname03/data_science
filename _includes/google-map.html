@@ -2,7 +2,30 @@
 <script>
   window.mapData = {"latitude": {{ include.latitude }},"longitude": {{ include.longitude }}, "zoom": {{ include.zoom}}};
 
+	function getcsv(){
+		$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/Task_8_result.csv',
+			async: false,
+
+			success: function(result){
+				lines = result.split("\n") // split the values by the lines
+
+				// convert the records to json values
+				var records = lines.filter((s)=> s.length > 0).map((record) =>{
+					details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+					details = details || []
+					return {business_name:details[0],address:details[1],inspection_date:details[2],years_alive:details[3],latitude:details[4],longitude:details[5]}
+				})
+
+				headers = records[0]
+				records.shift()
+
+				return records;
+			}
+		})
+	}
+
   function initMap() {
+		console.log(getcsv());
     var myOptions = {
       scrollwheel: true,
       draggable: true,
