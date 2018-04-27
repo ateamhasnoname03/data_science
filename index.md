@@ -208,23 +208,14 @@
 			});
 		}
 	});
-
 </script>
-#### TASK 4
 
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-	<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+### TASK 4
 <script>
 	$('document').ready(function(){
 		document.getElementById('chartType').addEventListener('change', function(e) {
-		
 			populate_graph()
-
-		//console.log(document.getElementById('chartType').val)
 		});
-
 	});
 </script>
 
@@ -238,97 +229,96 @@
 </div>
 
 <script>
-		var InspectionChart = document.getElementById('InspectionChart').getContext('2d');
-		
-		populate_graph()
-		function populate_graph(){
-		$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/task4_result.csv',
-			async: false,
+	var InspectionChart = document.getElementById('InspectionChart').getContext('2d');
+	
+	populate_graph()
+	function populate_graph(){
+	$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/task4_result.csv',
+		async: false,
 
-			 success: function(result){
-			 	//console.log(data.responseText
+			success: function(result){
+			//console.log(data.responseText
 
-				lines = result.split("\n") // split the values by the lines
+			lines = result.split("\n") // split the values by the lines
 
-				// convert the records to json values
-				var records = lines.filter((s)=> s.length > 0).map((record) =>{
-				
-				details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
-				details = details || []
-				return {name:details[0],address:details[1],avgRating:details[2],numPass:details[3],numCond:details[4],numFail:details[5]}
-				
-				})
+			// convert the records to json values
+			var records = lines.filter((s)=> s.length > 0).map((record) =>{
+			
+			details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+			details = details || []
+			return {name:details[0],address:details[1],avgRating:details[2],numPass:details[3],numCond:details[4],numFail:details[5]}
+			
+			})
 
-				headers = records[0] // get the headers
+			// get and remove headers row
+			headers = records[0]
+			records.shift()
 
-				records.shift() // remove the first (headers) row
+			//perform maps for obtaining ploting data
+			var avgRatingValues = records.map((record) => record.avgRating)
+			var passCounts = records.map((record) => record.numPass)
+			var condCounts = records.map((record) => record.numCond)
+			var failCounts = records.map((record) => record.numFail)
 
-				var avgRatingValues = records.map((record) => record.avgRating)
-				var passCounts = records.map((record) => record.numPass)
-				var condCounts = records.map((record) => record.numCond)
-				var failCounts = records.map((record) => record.numFail)
+			var ratingToPass = records.map((record) => {
+				var obj = {x:record.avgRating,y:record.numPass}
+				return obj
+			})
 
-				var ratingToPass = records.map((record) => {
-					var obj = {x:record.avgRating,y:record.numPass}
-					return obj
-				})
+			var ratingToConditional = records.map((record) =>{
+				var ob = {x:record.avgRating, y:record.numCond}
+				return ob
+			})
 
-				var ratingToConditional = records.map((record) =>{
-					var ob = {x:record.avgRating, y:record.numCond}
-					return ob
-				})
+			var ratingToFail = records.map((record) => {
+				var ob = {x:record.avgRating, y:record.numFail}
+				return ob
+			})
 
-				var ratingToFail = records.map((record) => {
-					var ob = {x:record.avgRating, y:record.numFail}
-					return ob
-				})
+			var elem = document.getElementById("chartType");
+				var value = elem.options[elem.selectedIndex].value;
+				var text = elem.options[elem.selectedIndex].text;
+				var graph_data = ''
+				if (value == 'pass'){
+					graph_data = ratingToPass
+					graph_label = '#Pass'
+					graph_color = 'Green'
+				} else if (value == 'conditional'){
+					graph_data = ratingToConditional
+					graph_label = '#Conditional'
+					graph_color = 'Orange'
+				} else if (value == 'fail'){
+					graph_data = ratingToFail
+					graph_label = '#Fail'
+					graph_color = 'Red'
+				}
+			console.log(graph_data)
 
-				var elem = document.getElementById("chartType");
-			    var value = elem.options[elem.selectedIndex].value;
-			    var text = elem.options[elem.selectedIndex].text;
-			    var graph_data = ''
-			    if (value == 'pass'){
-			    	graph_data = ratingToPass
-			    	graph_label = '#Pass'
-			    	graph_color = 'Green'
-			    } else if (value == 'conditional'){
-			    	graph_data = ratingToConditional
-			    	graph_label = '#Conditional'
-			    	graph_color = 'Orange'
-			    } else if (value == 'fail'){
-			    	graph_data = ratingToFail
-			    	graph_label = '#Fail'
-			    	graph_color = 'Red'
-			    }
-				console.log(graph_data)
+			// scatter plot for plotting average ratings vs number of passed inspections
+			var scatterChart = new Chart(InspectionChart, {
+				type: 'scatter',
+				data: {
+						datasets: [{
+								label: 'Average Review Rating vs '+graph_label,
+								data: graph_data,
+								backgroundColor: graph_color
 
-				// scatter plot for plotting average ratings vs number of passed inspections
-				var scatterChart = new Chart(InspectionChart, {
-			    type: 'scatter',
-			    data: {
-			        datasets: [{
-			            label: 'Average Review Rating vs '+graph_label,
-			            data: graph_data,
-			            backgroundColor: graph_color
-
-			        }]
-			    },
-			    options: {
-			        scales: {
-			            xAxes: [{
-			                type: 'linear',
-			                position: 'bottom'
-			            }]
-			        }
-			    }
-				});
-
-			 }})
-
+						}]
+				},
+				options: {
+						scales: {
+								xAxes: [{
+										type: 'linear',
+										position: 'bottom'
+								}]
+						}
+				}
+			});
+		}})
 	}	
 </script>
 
-#### Task 6
+### Task 6
 <html>
 <head></head>
 <body>
@@ -442,8 +432,8 @@
 	</script>
 
 	
-#### Task 7
-### Yelp Restaurant Review Rating Chart
+### Task 7
+#### Yelp Restaurant Review Rating Chart
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 <script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
@@ -508,14 +498,14 @@
 
 
 
-#### Task 8
-### Food inspection viability and interactive map.
+### Task 8
+#### Food inspection viability and interactive map.
 {% include google-map.html latitude=41.8781 longitude=-87.6298 zoom=15 %}
 
 
 
-#### Task 10
-### Predicting probabilities of each type of robbery against census blocks for Summer 2018 
+### Task 10
+#### Predicting probabilities of each type of robbery against census blocks for Summer 2018 
 
 <head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
