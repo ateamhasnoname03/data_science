@@ -1,13 +1,38 @@
-<div id="map" style="width:300px;height:300px;"></div>
+<div id="map" style="width:100%;height:100%;"></div>
+
 <script>
   window.mapData = {"latitude": {{ include.latitude }},"longitude": {{ include.longitude }}, "zoom": {{ include.zoom}}};
 
+	function getcsv(){
+		$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/Task_8_result.csv',
+			async: false,
+
+			success: function(result){
+				lines = result.split("\n") // split the values by the lines
+
+				// convert the records to json values
+				var records = lines.filter((s)=> s.length > 0).map((record) =>{
+					details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+					details = details || []
+					return {business_name:details[0],address:details[1],inspection_date:details[2],years_alive:details[3],latitude:details[4],longitude:details[5]}
+				})
+
+				headers = records[0]
+				records.shift()
+
+				return records;
+			}
+		})
+	}
+
   function initMap() {
+		records = getcsv();
+
     var myOptions = {
-      scrollwheel: false,
-      draggable: false,
-      panControl: false,
-      disableDefaultUI: true,
+      scrollwheel: true,
+      draggable: true,
+      panControl: true,
+      disableDefaultUI: false,
       zoom: window.mapData.zoom,
       maxZoom: window.mapData.zoom,
       minZoom: window.mapData.zoom,
@@ -16,6 +41,33 @@
     };
 
     var map = new google.maps.Map(document.getElementById('map'), myOptions);
+
+		let markers = [];
+		records.forEach(function(item){
+			var marker = new google.maps.Marker({
+					position: {lat: parseFloat(item.latitude), lng: parseFloat(item.longitude)},
+					map: Gmap,
+					title: item.business_name
+				});
+
+				let address = item.address;
+				var infowindow = new google.maps.InfoWindow({
+					content:  `<div class="container">
+											<h3>`+ item.business_name + `</h3>
+											<p><b>Address:</b>`+item.address+`</p>
+											<p><b>Failed Inspection on:</b>`+item.inspection_date+`</p>
+											<p><b>Stayed in Business for:</b>`+item.years_alive+` years</p>
+											</div>
+											`
+				});
+
+				marker.addListener('click', function() {
+					infowindow.open(Gmap, marker);
+				});
+
+				markers.push(marker);
+				console.log("pushed a marker");
+		})
 
     var marker = new google.maps.Marker({
       map: map,
@@ -27,4 +79,3 @@
     });
   }
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ site.google_maps_javascript_api_key }}&amp;callback=initMap"></script>
