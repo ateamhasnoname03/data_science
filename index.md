@@ -250,7 +250,228 @@
 
 </body>
 </html>
+#### Task 6
 
+<html>
+<head></head>
+<body>
+
+	<div class="container">
+		
+		<canvas id="pos_neg_rating"></canvas>
+
+	</div>
+
+<script>
+		var passedInspectionChart = document.getElementById('passedInspectionChart').getContext('2d');
+		var conditionalInspectionChart = document.getElementById('conditionalInspectionChart').getContext('2d');
+		var failedInspectionChart = document.getElementById('failedInspectionChart').getContext('2d');
+		$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/task4_result.csv',
+			async: false,
+
+			 success: function(result){
+			 	//console.log(data.responseText
+
+				lines = result.split("\n") // split the values by the lines
+
+				// convert the records to json values
+				var records = lines.filter((s)=> s.length > 0).map((record) =>{
+				
+				details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+				details = details || []
+				return {name:details[0],address:details[1],avgRating:details[2],numPass:details[3],numCond:details[4],numFail:details[5]}
+				
+				})
+
+				headers = records[0] // get the headers
+
+				records.shift() // remove the first (headers) row
+
+				var avgRatingValues = records.map((record) => record.avgRating)
+				var passCounts = records.map((record) => record.numPass)
+				var condCounts = records.map((record) => record.numCond)
+				var failCounts = records.map((record) => record.numFail)
+
+				var ratingToPass = records.map((record) => {
+					var obj = {x:record.avgRating,y:record.numPass}
+					return obj
+				})
+
+				var ratingToConditional = records.map((record) =>{
+					var ob = {x:record.avgRating, y:record.numCond}
+					return ob
+				})
+
+				var ratingToFail = records.map((record) => {
+					var ob = {x:record.avgRating, y:record.numFail}
+					return ob
+				})
+
+				// scatter plot for plotting average ratings vs number of passed inspections
+				var scatterChart = new Chart(passedInspectionChart, {
+			    type: 'scatter',
+			    data: {
+			        datasets: [{
+			            label: 'Average Review Rating vs #Pass',
+			            data: ratingToPass,
+			            backgroundColor: 'Green'
+
+			        }]
+			    },
+			    options: {
+			        scales: {
+			            xAxes: [{
+			                type: 'linear',
+			                position: 'bottom'
+			            }]
+			        }
+			    }
+				});
+
+				// scatter plot for plotting average ratings vs number of conditional inspections
+				var scatterChart = new Chart(conditionalInspectionChart, {
+			    type: 'scatter',
+			    data: {
+			        datasets: [{
+			            label: 'Average Review Rating vs #Conditional',
+			            data: ratingToConditional,
+			            backgroundColor: 'Orange'
+			            
+			        }]
+			    },
+			    options: {
+			        scales: {
+			            xAxes: [{
+			                type: 'linear',
+			                position: 'bottom'
+			            }]
+			        }
+			    }
+				});	
+
+				// scatter plot for average ratings vs number of failed inspections
+				var scatterChart = new Chart(failedInspectionChart, {
+			    type: 'scatter', //bar, horizontal bar, pie, line, doughnuts, radar,polararea
+			    data: {
+			        datasets: [{
+			            label: 'Average Review Rating vs #Fail',
+			            data: ratingToFail,
+			            backgroundColor: 'Red'
+
+			        }]
+			    },
+			    options: {
+			        scales: {
+			            xAxes: [{
+			                type: 'linear',
+			                position: 'bottom'
+			            }]
+			        }
+			    }
+				});
+
+			 }})
+
+		$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/SentimentAnalysis.csv',
+			async: false,
+
+			 success: function(result){
+
+			 	console.log('Output for Task 5')
+
+			 	lines = result.split("\n") // split the values by the lines
+
+				// convert the records to json values
+				var records = lines.filter((s)=> s.length > 0).map((record) =>{
+				
+				details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+				details = details || []
+				return {name:details[1],reviewContent:details[2],rating:details[3],sentimentLabel:details[4]}
+			 	})
+
+
+			 	records.shift() // remove the first (headers) row
+
+			 	var restaurant_names = new Set(records.map((record) => record.name))
+
+			 	console.log(restaurant_names)
+				// group the records by the the restaurant name
+			 	mod_records = records.reduce((r, a)=> {
+		        r[a.name] = r[a.name] || [];
+		        r[a.name].push(a);
+		        return r;
+		    	},{});
+
+			 	result = []
+			 	
+			 	console.log(mod_records)
+
+			 	output = new Array()
+				restaurant_names.forEach( function(item) {
+					details_list = mod_records[item]
+					count = details_list.length
+					restaurant = details_list[0].name
+					total_rating = 0
+					count_pos = 0
+					count_neg = 0
+					details_list.forEach( function(detail) {
+						//console.log(detail)
+						if(detail.sentimentLabel == "Positive") count_pos++;
+						else if(detail.sentimentLabel == "Negative") count_neg++;
+						total_rating = total_rating + parseInt(detail.rating)
+					})
+					output.push({name:restaurant, positive:count_pos, negative:count_neg, rating:Math.round((total_rating/count)*100)/100})
+				})
+			 	
+
+				positive_labels = output.map((rec) => {
+					var ob = {x:rec.rating, y:rec.positive}
+					return ob
+				})
+				negative_labels = output.map((rec) => {
+					var ob = {x:rec.rating, y:rec.negative}
+					return ob
+				})
+				rating_points = output.map((rec) => rec.rating)
+
+				var label_rating_chart = new Chart(pos_neg_rating,{
+					type: 'scatter',
+			    data: {
+			        datasets: [{
+			            label: 'Positive Label',
+			            data: positive_labels,
+			            backgroundColor: 'Green'
+			            
+			        },
+			        {
+			            label: 'Negative Label',
+			            data: negative_labels,
+			            backgroundColor: 'Red'
+			            
+			        }
+			        ]
+			    },
+			    options: {
+			        scales: {
+			            xAxes: [{
+			                type: 'linear',
+			                position: 'bottom'
+			            }]
+			        }
+			    }
+
+				})
+
+			 }})
+
+
+
+
+		
+
+	</script>
+</html>	
+	
 #### Task 7
 ### Yelp Restaurant Review Rating Chart
 <html>
