@@ -317,6 +317,7 @@
 
 
 #### Task 8
+### Food inspection viability and interactive map.
 {% include google-map.html latitude=41.8781 longitude=-87.6298 zoom=15 %}
 
 
