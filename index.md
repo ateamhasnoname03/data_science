@@ -240,64 +240,86 @@
     </style>
   </head>
   <body>
-    <div id="map"></div>
+		<div id="map"></div>
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
+
     <script>
+			function getcsv(){
+				$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/Task_8_result.csv',
+					async: false,
 
-      function initMap() {
+					success: function(result){
+						lines = result.split("\n") // split the values by the lines
 
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 3,
-          center: {lat: -28.024, lng: 140.887}
+						// convert the records to json values
+						var records = lines.filter((s)=> s.length > 0).map((record) =>{
+							details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+							details = details || []
+
+							//business_name,address,inspection_date,years_alive,latitude,longitude
+
+							return {business_name:details[0],address:details[1],inspection_date:details[2],years_alive:details[3],latitude:details[4],longitude:details[5]}
+						})
+
+						headers = records[0]
+						records.shift()
+
+						console.log(records)
+
+						initMap(records)
+					}
+				})
+			}
+
+      function initMap(records) {
+
+        var Gmap = new google.maps.Map(document.getElementById('map'), {
+          zoom: 14,
+          center: {lat: 41.8781, lng: -87.6298}
         });
-
-        // Create an array of alphabetical characters used to label the markers.
-        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
         // Add some markers to the map.
         // Note: The code uses the JavaScript Array.prototype.map() method to
         // create an array of markers based on a given "locations" array.
         // The map() method here has nothing to do with the Google Maps API.
-        var markers = locations.map(function(location, i) {
-          return new google.maps.Marker({
-            position: location,
-            label: labels[i % labels.length]
-          });
-        });
+				let markers = [];
+				$.each(records, function(i, d){
+					var marker = new google.maps.Marker({
+						position: {lat: parseFloat(d.latitude), lng: parseFloat(d.longitude)},
+						map: Gmap,
+						title: d.business_name
+					});
 
+					let address = d.address;
+					var infowindow = new google.maps.InfoWindow({
+						content:  `<div class="container">
+												<h3>${d.business_name}</h3>
+												<p><b>Address:</b>${d.address}</p>
+												<p><b>Failed Inspection on:</b>${d.inspection_date}</p>
+												<p><b>Stayed in Business for:</b>${d.years_alive} years</p>
+												</div>
+												`
+					});
+
+					marker.addListener('click', function() {
+      		infowindow.open(Gmap, marker);
+					});
+
+					markers.push(marker);
+				});
+        
         // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-      }
-      var locations = [
-        {lat: -31.563910, lng: 147.154312},
-        {lat: -33.718234, lng: 150.363181},
-        {lat: -33.727111, lng: 150.371124},
-        {lat: -33.848588, lng: 151.209834},
-        {lat: -33.851702, lng: 151.216968},
-        {lat: -34.671264, lng: 150.863657},
-        {lat: -35.304724, lng: 148.662905},
-        {lat: -36.817685, lng: 175.699196},
-        {lat: -36.828611, lng: 175.790222},
-        {lat: -37.750000, lng: 145.116667},
-        {lat: -37.759859, lng: 145.128708},
-        {lat: -37.765015, lng: 145.133858},
-        {lat: -37.770104, lng: 145.143299},
-        {lat: -37.773700, lng: 145.145187},
-        {lat: -37.774785, lng: 145.137978},
-        {lat: -37.819616, lng: 144.968119},
-        {lat: -38.330766, lng: 144.695692},
-        {lat: -39.927193, lng: 175.053218},
-        {lat: -41.330162, lng: 174.865694},
-        {lat: -42.734358, lng: 147.439506},
-        {lat: -42.734358, lng: 147.501315},
-        {lat: -42.735258, lng: 147.438000},
-        {lat: -43.999792, lng: 170.463352}
-      ]
+        var markerCluster = new MarkerClusterer(Gmap, markers,
+					{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+					maxZoom: 20
+				});
+			}
     </script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC94Y9rHyYQQ9CCf4DbV8f9J0ER9nKIdUg&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC94Y9rHyYQQ9CCf4DbV8f9J0ER9nKIdUg&callback=getcsv">
     </script>
   </body>
 </html>
