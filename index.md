@@ -328,35 +328,32 @@
 	$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/SentimentAnalysis.csv',
 		async: false,
 
-			success: function(result){
-
-			console.log('Output for Task 5')
-
-			lines = result.split("\n") // split the values by the lines
-
+		success: function(result){
+			// split the values by the lines
+			lines = result.split("\n")
 			// convert the records to json values
 			var records = lines.filter((s)=> s.length > 0).map((record) =>{
-			
-			details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
-			details = details || []
-			return {name:details[1],reviewContent:details[2],rating:details[3],sentimentLabel:details[4]}
+				details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+				details = details || []
+				return {name:details[1],reviewContent:details[2],rating:details[3],sentimentLabel:details[4]}
 			})
 
+			// remove the first (headers) row
+			records.shift()
 
-			records.shift() // remove the first (headers) row
-
+			//get restarant_names
 			var restaurant_names = new Set(records.map((record) => record.name))
-
+			//verify last line
 			console.log(restaurant_names)
+			
 			// group the records by the the restaurant name
 			mod_records = records.reduce((r, a)=> {
 					r[a.name] = r[a.name] || [];
 					r[a.name].push(a);
 					return r;
 				},{});
-
-			result = []
-			
+			//result = []
+			//verify last line
 			console.log(mod_records)
 
 			output = new Array()
@@ -376,7 +373,6 @@
 				output.push({name:restaurant, positive:count_pos, negative:count_neg, rating:Math.round((total_rating/count)*100)/100})
 			})
 			
-
 			positive_labels = output.map((rec) => {
 				var ob = {x:rec.rating, y:rec.positive}
 				return ob
@@ -390,34 +386,29 @@
 			var label_rating_chart = new Chart(pos_neg_rating,{
 				type: 'scatter',
 				data: {
-						datasets: [{
-								label: 'Positive Label',
-								data: positive_labels,
-								backgroundColor: 'Green'
-								
-						},
-						{
-								label: 'Negative Label',
-								data: negative_labels,
-								backgroundColor: 'Red'
-								
-						}
-						]
+					datasets: [{
+						label: 'Positive Label',
+						data: positive_labels,
+						backgroundColor: 'Green'
+					},
+					{
+						label: 'Negative Label',
+						data: negative_labels,
+						backgroundColor: 'Red'
+					}]
 				},
 				options: {
-						scales: {
-								xAxes: [{
-										type: 'linear',
-										position: 'bottom'
-								}]
-						}
+					scales: {
+						xAxes: [{
+							type: 'linear',
+							position: 'bottom'
+						}]
+					}
 				}
-
 			})
-
-			}})
+		}
+	})
 </script>
-
 	
 ### Task 7
 #### Yelp Restaurant Review Rating Chart
