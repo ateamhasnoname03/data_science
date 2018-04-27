@@ -55,12 +55,12 @@
 					<p><b>Stayed in Business for:</b>`+item.years_alive+` years</p>
 					</div>`
 			});
+
+			marker.addListener('click', function() {
+				infowindow.open(map, marker);
+			});
 		});
     
-
-    google.maps.event.addDomListener(window, 'resize', function() {
-      map.setCenter(myOptions.center);
-    });
   }
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ site.google_maps_javascript_api_key }}&amp;callback=initMap"></script>
