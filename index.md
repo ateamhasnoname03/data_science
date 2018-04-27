@@ -4,7 +4,7 @@
 
 ### DATA VISUALIZATION CHARTS
 
-#### Task 1
+### Task 1
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 <script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -86,13 +86,8 @@
 	})
 </script>
 
-
-
-
 ### Task 2
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
 <div class="container">
 	<canvas id="NeighbourhoodvsCrimesProb"></canvas>
 </div>
