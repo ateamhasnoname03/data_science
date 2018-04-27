@@ -225,8 +225,6 @@
 
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
-	<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC94Y9rHyYQQ9CCf4DbV8f9J0ER9nKIdUg&callback=getcsv"></script>
  
   </head>
   <body>
@@ -304,6 +302,8 @@
 			});
 		}
 	</script>
+	<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC94Y9rHyYQQ9CCf4DbV8f9J0ER9nKIdUg&callback=getcsv"></script>
 
   </body>
 </html>
