@@ -1,4 +1,5 @@
 <div id="map" style="width:300px;height:300px;"></div>
+
 <script>
   window.mapData = {"latitude": {{ include.latitude }},"longitude": {{ include.longitude }}, "zoom": {{ include.zoom}}};
 
@@ -18,7 +19,7 @@
 
 				headers = records[0]
 				records.shift()
-
+				console.log(records)
 				return records;
 			}
 		})
