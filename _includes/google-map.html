@@ -45,8 +45,7 @@
 		let markers = [];
 		records.forEach(function(item){
 			var marker = new google.maps.Marker({
-					position: {lat: parseFloat(item.latitude), lng: parseFloat(item.longitude)},
-					map: Gmap,
+					position: new google.maps.LatLng(parseFloat(item.latitude), parseFloat(item.longitude)),
 					title: item.business_name
 				});
 
@@ -62,17 +61,12 @@
 				});
 
 				marker.addListener('click', function() {
-					infowindow.open(Gmap, marker);
+					infowindow.open(map, marker);
 				});
 
 				markers.push(marker);
 				console.log("pushed a marker");
 		})
-
-    var marker = new google.maps.Marker({
-      map: map,
-      position: new google.maps.LatLng(window.mapData.latitude, window.mapData.longitude)
-    });
 
     google.maps.event.addDomListener(window, 'resize', function() {
       map.setCenter(myOptions.center);
