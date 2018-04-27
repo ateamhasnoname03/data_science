@@ -612,11 +612,11 @@
 		
 
 	</script>
-</html>	
+
 	
 #### Task 7
 ### Yelp Restaurant Review Rating Chart
-<html>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 <script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -676,7 +676,7 @@
 		 }}
 		 )
 </script>
-</html>
+
 
 
 
@@ -688,7 +688,7 @@
 
 #### Task 10
 ### Predicting probabilities of each type of robbery against census blocks for Summer 2018 
-<html>
+
 <head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 <script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
