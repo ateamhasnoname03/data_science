@@ -410,8 +410,7 @@
 	})
 </script>
 	
-### Task 7
-#### Yelp Restaurant Review Rating Chart
+### Yelp Restaurant Review Rating Chart
 <div class="container">
 	<canvas id="reviewRatingChart" width="50" height="25"></canvas>
 </div>
@@ -464,20 +463,10 @@
 	})
 </script>
 
-### Task 8
-#### Food inspection viability and interactive map.
+### Food inspection viability and interactive map.
 {% include google-map.html latitude=41.8781 longitude=-87.6298 zoom=15 %}
 
-
-
-### Task 10
 #### Predicting probabilities of each type of robbery against census blocks for Summer 2018 
-
-<head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function()
 {
@@ -611,8 +600,7 @@ $(document).ready(function()
 		 //click closes here
 });
 </script>
-</head> 
-<body>
+
 <div class="container">
 	<label id="selectMonth"><b>Select the month</b></label>
 	<select id ="selectedMonth">
@@ -624,8 +612,7 @@ $(document).ready(function()
 	<button id="selMonthBtn">Get Monthly Data</button>
 	<canvas id="robberyByCensusChart"></canvas>
 </div>
-</body>
-</html>
+
 
 
 ### TEAM MEMBERS
