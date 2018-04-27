@@ -9,7 +9,8 @@
 			async: false,
 
 			success: function(result){
-				lines = result.split("\n") // split the values by the lines
+				// split the values by the lines
+				lines = result.split("\n") 
 
 				// convert the records to json values
 				records = lines.filter((s)=> s.length > 0).map((record) =>{
@@ -17,7 +18,8 @@
 					details = details || []
 					return {business_name:details[0],address:details[1],inspection_date:details[2],years_alive:details[3],latitude:details[4],longitude:details[5]}
 				})
-
+				
+				//escape the headers.
 				headers = records[0]
 				records.shift()
 			}
@@ -25,13 +27,15 @@
 	}
 
   function initMap() {
+		//Get the data ready
 		getcsv();
-		console.log(records);
+
+		//Set options for interactive map.
     var myOptions = {
       scrollwheel: true,
       draggable: true,
       panControl: true,
-      disableDefaultUI: false,
+      disableDefaultUI: true,
       zoom: window.mapData.zoom,
       maxZoom: window.mapData.zoom,
       minZoom: window.mapData.zoom,
@@ -39,15 +43,22 @@
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
+		//Create the map.
     var map = new google.maps.Map(document.getElementById('map'), myOptions);
+		
+		//Create a list of markers.
 		var markers = [];
+
+		//go through records and parse
 		records.forEach(function(item){
+			//create a new record @lng and lat of business
 			var marker = new google.maps.Marker({
 				map: map,
 				position: new google.maps.LatLng(parseFloat(item.latitude), parseFloat(item.longitude)),
 				title: item.business_name
 			});
 
+			//Create an interactive context window
 			var infowindow = new google.maps.InfoWindow({
 					content:  `<div class="container">
 					<h3>`+ item.business_name + `</h3>
@@ -57,9 +68,13 @@
 					</div>`
 			});
 
+			//Create a Listener so info window appears when marker is clicked
 			marker.addListener('click', function() {
 				infowindow.open(map, marker);
 			});
+
+			//Add marker to marker list.
+			markers.push(marker);
 		});
     
   }
