@@ -258,7 +258,7 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <div class="container">
-	<canvas id="reviewRatingChart"width="50" height="25""></canvas>
+	<canvas id="reviewRatingChart" width="50" height="25"></canvas>
 </div>
 <script>
 	var reviewRatingChart = document.getElementById('reviewRatingChart').getContext('2d');
