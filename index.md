@@ -322,6 +322,163 @@
 
 
 
+#### Task 10
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function()
+{
+    $("button").click(function()
+	{
+		// all code should go here
+		var selMonth = document.getElementById('selectedMonth').value;
+		var robberyByCensusChart = document.getElementById('robberyByCensusChart').getContext('2d');
+		$.ajax({url :'https://cors.io/?https://raw.githubusercontent.com/ateamhasnoname03/data_science/master/Data%20Integration%20and%20Analytics/output/task10_output.csv',
+		async: false,
+
+		 success: function(result){
+		 	//console.log(data.responseText
+
+			lines = result.split("\n") // split the values by the lines
+
+			// convert the records to json values
+			var records = lines.filter((s)=> s.length > 0).map((record) =>{
+			
+			details = record.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+			details = details || []
+			return {censusBlock:details[0],month:details[1],avgTemp:details[2],robberyType:details[3],probability:details[4]}
+			
+			})
+
+			headers = records[0] // get the headers
+
+			records.shift() // remove the first (headers) row
+
+			var censusBlockValues = records.map((record) => record.censusBlock)
+			var monthValues = records.map((record) => record.month)
+			var avgTempValues = records.map((record) => record.avgTemp)
+			var robberyTypeValues = records.map((record) => record.robberyType)
+			var probabilityValues = records.map((record) => record.probability)
+			
+			var probabilityToCensusBlock_Aggravated = records.map((record) => {
+				if (record.robberyType.trim() === 'AGGRAVATED' && record.month == selMonth) {
+						var obj1 = {x:record.censusBlock,y:record.probability}
+					}selMonth
+					return obj1
+			})
+			
+			var probabilityToCensusBlock_Armed = records.map((record) => {
+				if (record.robberyType.trim() === 'ARMED' && record.month == selMonth) {
+					var obj2 = {x:record.censusBlock,y:record.probability} }
+				return obj2
+			})
+			
+			var probabilityToCensusBlock_Attempt = records.map((record) => {
+				if (record.robberyType.trim() === 'ATTEMPT' && record.month == selMonth) {
+					var obj3 = {x:record.censusBlock,y:record.probability} }
+				return obj3
+			})
+			
+			var probabilityToCensusBlock_Strongarm = records.map((record) => {
+				if (record.robberyType.trim() === 'STRONGARM - NO WEAPON' && record.month == selMonth) {
+					var obj4 = {x:record.censusBlock,y:record.probability} }
+				return obj4
+			})
+			
+			var probabilityToCensusBlock_Vehicular = records.map((record) => {
+				if (record.robberyType.trim() === 'VEHICULAR HIJACKING' && record.month == selMonth) {
+					var obj5 = {x:record.censusBlock,y:record.probability} }
+				return obj5
+			})
+			
+
+			// scatter plot for plotting probabilities vs census blocks
+			var scatterChart = new Chart(robberyByCensusChart, {
+		    type: 'line',
+		    data: {
+			
+			labels: ['2801001025', '2819001001', '3201001008', '3201001017', '3201001020', '3201002021', '3201002023', '3201002026', '3201002030', '3201002034', '3201003009', '3204001020', '3204001035', '3204001036', '3204001043', '3206001010', '3206002005', 
+					'3301001000', '3301001001', '3301001007', '3301003009', '8391001020', '8391001023', '8391001033', '8391001034', '8391001037', '8391001038', '8391001045', '8391001049', '8391001056', '8391001057', '8391001062', '8391001064', '8391001068', 
+					'8391001093', '8391001096', '8391001102', '8391001107', '8391002000', '8391002008', '8391002013', '8391002021', '8391002046'],
+			 datasets: [
+			 {
+		        label: 'Aggravated',
+		        data: probabilityToCensusBlock_Aggravated,
+		        backgroundColor: 'Yellow',
+				showLine: true
+
+		    },
+			{
+		        label: 'Armed',
+		        data: probabilityToCensusBlock_Armed,
+		        backgroundColor: 'Red',
+				showLine: true
+
+		    },
+			{
+		        label: 'Attempt',
+		        data: probabilityToCensusBlock_Attempt,
+		        backgroundColor: 'Orange',
+				showLine: true
+
+		    },
+			{
+		        label: 'Strongarm - No Weapon',
+		        data: probabilityToCensusBlock_Strongarm,
+		        backgroundColor: 'Green',
+				showLine: true
+
+		    },
+			{
+		        label: 'Vehicular Hijacking',
+		        data: probabilityToCensusBlock_Vehicular,
+		        backgroundColor: 'Purple',
+				showLine: true
+
+		    }]
+		    },
+		    options: {
+				scales: {
+					xAxes: [{
+						ticks: {
+							autoSkip : false
+								},					
+		               type: 'category'
+		            },		
+					]
+		        }
+				}
+			//new chart closes
+		    });
+			}
+			//result closes here
+			})
+			//.ajax closes here
+		 })
+		 //click closes here
+});
+</script>
+</head> 
+<body>
+<div class="container">
+	<label id="selectMonth"><b>Select the month</b></label>
+	<select id ="selectedMonth">
+		<option value = "6">June 2018</option>
+		<option value = "7">July 2018</option>
+		<option value = "8">August 2018</option>
+		<option value = "9">September 2018</option>
+	</select>
+	<button id="selMonthBtn">Get Monthly Data</button>
+	<canvas id="robberyByCensusChart"></canvas>
+</div>
+</body>
+</html>
+
+
 ### TEAM MEMBERS
 - **Meghana Sanjay**
   < msanja3@uic.edu > 
