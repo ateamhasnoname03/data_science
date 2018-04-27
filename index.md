@@ -39,14 +39,20 @@
 				headers = records[0]
 				records.shift()
 
-				var businesstype_crimenum = records.map((record) => {
+				/*var businesstype_crimenum = records.map((record) => {
 					var obj = {x:record.business_type,z:record.crimes}
 					return obj
-				})
+				})*/
 
 				result = records.reduce((r,a) => {
 					r[a.business_type] = r[a.business_type] || [];
 					r[a.business_type].push(parseInt(a.crimes));
+					return r;
+				}, {})
+
+				arrest_result = records.reduce((r,a) => {
+					r[a.business_type] = r[a.business_type] || [];
+					r[a.business_type].push(parseInt(a.arrests));
 					return r;
 				}, {})
 				
@@ -59,23 +65,49 @@
 				result.b = result.b.reduce(add, 0);
 				result.c = result.c.reduce(add, 0);
 
-				var data = [result.a, result.b, result.c]
+				arrest_result.a = arrest_result.a.reduce(add, 0);
+				arrest_result.b = arrest_result.b.reduce(add, 0);
+				arrest_result.c = arrest_result.c.reduce(add, 0);
 
-				console.log(data)
+				var crime_data = [result.a, result.b, result.c]
 
-				var scatterChart = new Chart(btvcrime, {
-					type: 'bar',
-					data: data,
-					options: {
-    scales: {
-        xAxes: [{
-            gridLines: {
-                offsetGridLines: true
-            }
-        }]
-    }
-}
-				});
+				var arrest_data = [arrest_result.a, arrest_result.b, arrest_result.c]
+
+				console.log(crime_data)
+				
+
+				var barChartData = {
+			labels: ['Grocery Stores', 'Schools', 'Restaurants'],
+			datasets: [{
+				label: '#Crimes',
+				backgroundColor: '#ff6384',
+				borderColor: '#ff6384',
+				borderWidth: 1,
+				data: crime_data
+			}, {
+				label: '#Arrests',
+				backgroundColor: '#36a2eb',
+				borderColor: '#36a2eb',
+				borderWidth: 1,
+				data: arrest_data
+			}]
+
+		};
+
+		var scatterChart = new Chart(btvcrime, {
+				type: 'bar',
+				data: barChartData,
+				options: {
+					responsive: true,
+					legend: {
+						position: 'top',
+					},
+					title: {
+						display: true,
+						text: 'Task 1'
+					}
+				}
+			});
 			}
 		})
 
