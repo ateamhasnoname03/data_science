@@ -46,7 +46,15 @@
 				position: new google.maps.LatLng(parseFloat(item.latitude), parseFloat(item.longitude)),
 				title: item.business_name
 			});
-		
+
+			var infowindow = new google.maps.InfoWindow({
+					content:  `<div class="container">
+					<h3>`+ item.business_name + `</h3>
+					<p><b>Address:</b>`+item.address+`</p>
+					<p><b>Failed Inspection on:</b>`+item.inspection_date+`</p>
+					<p><b>Stayed in Business for:</b>`+item.years_alive+` years</p>
+					</div>`
+			});
 		});
     
 
