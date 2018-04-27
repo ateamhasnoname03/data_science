@@ -229,7 +229,7 @@
   </head>
   <body>
 
-	<div id="map" style:"height: 100%"></div>
+	<div id="map"></div>
 		
     <script>
 		function getcsv(){
