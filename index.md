@@ -220,7 +220,7 @@
 </html>
 
 #### Task 8
-{% include google-map.html latitude=-45.8787605 longitude=170.5027976 zoom=5 %}
+{% include google-map.html latitude=-41.8781 longitude=-87.6298 zoom=25 %}
 
 
 
