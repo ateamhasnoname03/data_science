@@ -208,16 +208,15 @@
 			});
 		}
 	});
-	
+
 </script>
 #### TASK 4
-<html>
-<head>
+
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 	<script type="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"></script>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script>
+<script>
 	$('document').ready(function(){
 		document.getElementById('chartType').addEventListener('change', function(e) {
 		
@@ -227,26 +226,18 @@
 		});
 
 	});
-	</script>
+</script>
 
-</head>
+<div class="container">
+	<canvas id="InspectionChart"></canvas>
+	<select id="chartType">
+			<option value="pass">Passed Inspections</option>
+			<option value="conditional">Conditional Inspections</option>
+			<option value="fail">Fail Inspections</option>
+	</select>
+</div>
 
-
-<body>
-
-	<div class="container">
-		<canvas id="InspectionChart"></canvas>
-		
-		
-		<select id="chartType">
-		    <option value="pass">Passed Inspections</option>
-		    <option value="conditional">Conditional Inspections</option>
-		    <option value="fail">Fail Inspections</option>
-	    
-		</select>
-	</div>
-
-	<script>
+<script>
 		var InspectionChart = document.getElementById('InspectionChart').getContext('2d');
 		
 		populate_graph()
@@ -334,16 +325,10 @@
 
 			 }})
 
-	}
+	}	
+</script>
 
-
-		
-	</script>
-
-</body>
-</html>
 #### Task 6
-
 <html>
 <head></head>
 <body>
